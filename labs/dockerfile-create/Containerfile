@@ -1,0 +1,19 @@
+FROM ubi8/ubi:8.5
+
+MAINTAINER hanafi <hanafi@example.com>
+
+LABEL description="A custom Apache container based on UBI 8"
+
+RUN yum install httpd tar zip bzip2 -y && yum clean all
+RUN echo "Hello from a Containerfile" > /var/www/html/index.html
+RUN mkdir /hanafibz2 && mkdir /hanafizip 
+
+ADD hanafi3.tar /hanafibz2
+
+ADD hanafi.tar.zip /hanafizip
+RUN tar xvfz /hanafizip/hanafi.tar.zip -C /hanafizip
+COPY hanafi.txt /
+
+EXPOSE 80
+
+CMD ["httpd", "-D", "FOREGROUND"] 
